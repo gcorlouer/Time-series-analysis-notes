@@ -2,15 +2,17 @@
 %Packages
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
-\usepackage{ amssymb }
+\usepackage{amssymb}
+\usepackage{amsthm}%for theorem style
 \usepackage{amsfonts}
 \usepackage{enumerate}
 \usepackage{graphicx}
-\usepackage{ dsfont }
+\usepackage{dsfont}
 %Maths operators 
 \DeclareMathOperator{\cov}{cov}
 \DeclareMathOperator{\cor}{corr}
 %Theorems, def, examples
+\theoremstyle{definition}
 \newtheorem{Th}{Theorem}[section]
 \newtheorem{Prop}{Proposition}[section]
 \newtheorem{ex}{Example}[section]
@@ -199,7 +201,6 @@ We plot an example of the (autocorrelation function) acf and partial autocorrela
 \end{figure}
 \end{ex}
 The ACF decrease exponentially due to the fact that $\gamma_k=\phi^k\gamma_0$ and the PACF gives indeed a good estimation of the model order. In our case it give exactly the coefficient of the model but it is not a general feature of the pacf as we will see some methods of estimation.
-\section{Forcasting}
 \section{Estimation}
 \section{Spectral analysis}
 \section{G-causality}
