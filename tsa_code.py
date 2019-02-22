@@ -1,6 +1,7 @@
 import numpy as np
 import random 
 import statsmodels.api as sm
+from statsmodels.tsa.stattools import acf, pacf
 from statsmodels.tsa.arima_process import arma_generate_sample
 import matplotlib.pyplot as plt 
 #1D Random walk
@@ -32,3 +33,11 @@ plt.plot(X[0,:])
 for i in range(N-1):
     X[0,i+1]=2*X[0,i]+epsilon[0,i]
 plt.plot(X[0,:])
+#Estimate ACF and PACF
+acf_X=acf(np.squeeze(X), nlags=10)
+pacf_X=pacf(np.squeeze(X), nlags=10)
+fig = plt.figure(figsize=(12,8))
+ax1 = fig.add_subplot(211)
+fig = sm.graphics.tsa.plot_acf(np.squeeze(X), lags=10, ax=ax1)
+ax2 = fig.add_subplot(212)
+fig = sm.graphics.tsa.plot_pacf(np.squeeze(X), lags=10, ax=ax2)
