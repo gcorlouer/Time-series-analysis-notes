@@ -7,6 +7,9 @@
 \usepackage{enumerate}
 \usepackage{graphicx}
 \usepackage{ dsfont }
+%Maths operators 
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\cor}{corr}
 %Theorems, def, examples
 \newtheorem{Th}{Theorem}[section]
 \newtheorem{Prop}{Proposition}[section]
@@ -31,7 +34,7 @@
 \end{itemize}
 \section{Introduction}
 The goal of these short notes is to introduce the concept of Granger Causality (GC) to make it accessible to neuroscientists. While causality can be defined in various ways, GC is an operational notion of causality that offers the advantage of defining an operational notion of causality without requiring any physical intervention on the object of study for ethical or practical reason as it is often the case in social sciences and neuroscience in particular.  
-\section{Multivariate Autoregressive Model (MVAR)}
+\section{Autoregressive Modeling}
 \subsection{What the hell is a time series?}
 A time series is a dataset indexed by time. For example in neuroscience, an EEG signal is a time series, a collection of voltage indexed by time. More formally, a time series is a realisation of a random process. A random process is a collection $(X_t)_{t\in T}$ of random variables where $T$ is an infinite space possibly discrete or continuous. Typically we chose $T=\mathbf{N}$ the set of natural numbers for the rest of this article. 
 \subsection{Random Walk}
@@ -78,7 +81,7 @@ Let $L$ be a backshift operator. Let $\psi_i$ be real numbers and $\psi_0=1$. Th
 \end{Def}
 Thanks to these definitions, one can represent an $ARMA(p,q)$ process in a more compact form : 
 \begin{equation*}
-    (1-\phi(L))x_t=\psi(L)\epsilon_t
+    \phi(L)x_t=\psi(L)\epsilon_t
 \end{equation*}
 \subsection{Invertibility, stability and stationarity}
 It appears under this more compact representation that if $\phi$ is invertible (resp. $\psi$) one can go from an ARMA representation to an infinite autoregressive representation (resp. moving average) of the process $x_t$. This is true if the roots of $\phi$ (resp $\psi$) lie outside the unit circle. This can be understood in light of the fundamental theorem of algebra. Indeed, let $\lambda_i$ be the roots of $\phi$ (they are all non zeros by definition of $\phi$). Then \begin{equation*}
@@ -135,7 +138,7 @@ A stable $AR(p)$ process is stationary.
 \end{Prop}
 Indeed if $X_t$ is stable then it writes : 
 \begin{equation*}
-    X_t=(1-\phi(L))^{-1}\psi(L)\epsilon_t
+    X_t=\phi(L)^{-1}\psi(L)\epsilon_t
 \end{equation*}
 Stability ensures that we can formally expand $X_t$ as an infinite series : 
 \begin{equation*}
@@ -172,11 +175,30 @@ From \ref{ACF_MA} it appears that the autocorrelation function alone gives us en
     \forall k\in\mathds{N},\quad\gamma_k=\sum_{i=1}^{k-1}\phi_1^i\gamma_{k-i}
 \end{equation*}
 \begin{Def}
-Let $\mathbf{E}(X_{t+h}|X_{t+1},X_{t+2},\cdot,\cdot,X_{t+h-1})$ be a regression of $X$ over $X_{t+1},X_{t+2},\codt,\cdot,X_{t+h-1}$. Define the partial autocorrelation function as :
+Let $X_{t+1:t+h-1}$ be the  collection of random variables $X_{t+1},X_{t+2},\cdot\cdot,X_{t+h-1}$  Define the partial autocorrelation function as :
 \begin{equation*}
-    \rho(X_{t+h},X_t|X_{t+1},X_{t+2},\cdot,\cdot,X_{t+h-1})
+    \rho_{h|h-1}=\cor(X_{t+h},X_t|X_{t+1:t+h-1})
 \end{equation*}
 \end{Def}
+\begin{ex}
+Let $x_t$ be an $AR(1)$ time series. One derives \begin{align*}
+    \mathbb{E}(X_{t+2}|X_{t+1})=\phi X_{t+1}\\
+    \mathbb{E}(X_{t}|X_{t+1})=X_{t+1}
+\end{align*}
+Injecting in the definition of the partial, autocorrelation, \begin{equation*}
+\rho_{2|1}=\frac{\mathbb{E}(X_{t+2}-\phi X_{t+1})(X_{t}-X_{t+1})}{\gamma_0}
+\end{equation*}
+With $\gamma_1=\phi\gamma_0$ and replacing in the previous equation one derives \begin{equation*}
+    \rho_{2|1}=\phi
+\end{equation*}
+We plot an example of the (autocorrelation function) acf and partial autocorrelation function (pacf) of an AR(1) model with $\phi=0.5$ on figure \ref{fig:acf_pacf_AR1}
+\begin{figure}[h]
+    \includegraphics[width=\textwidth]{acf_pacf_AR1.png}
+    \caption{ACF and PACF of $AR(1)$, $\phi=0.5$}
+    \label{fig:acf_pacf_AR1}
+\end{figure}
+\end{ex}
+The ACF decrease exponentially due to the fact that $\gamma_k=\phi^k\gamma_0$ and the PACF gives indeed a good estimation of the model order. In our case it give exactly the coefficient of the model but it is not a general feature of the pacf as we will see some methods of estimation.
 \section{Forcasting}
 \section{Estimation}
 \section{Spectral analysis}
