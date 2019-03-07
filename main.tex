@@ -17,6 +17,7 @@
 \newtheorem{Prop}{Proposition}[section]
 \newtheorem{ex}{Example}[section]
 \newtheorem{Def}{Definition}[section]
+\newtheorem{Cor}{Corrolary}[section]
 \title{Granger-Causality}
 \author{Guillaume Corlouer}
 \date{February 2019}
@@ -201,14 +202,49 @@ We plot an example of the (autocorrelation function) acf and partial autocorrela
 \end{figure}
 \end{ex}
 The ACF decrease exponentially due to the fact that $\gamma_k=\phi^k\gamma_0$ and the PACF gives indeed a good estimation of the model order. In our case it give exactly the coefficient of the model but it is not a general feature of the pacf as we will see some methods of estimation.
-\section{Estimation}
 \section{Spectral analysis}
+Spectral analysis takes the spectral (frequencies) point of view to analyse the time series. To define : spectral density, spectral density of ARMA, examples.
+\begin{Def}
+If the autocovariance of a stationary process $(X_t)$ is absolutely summable then it has representation : \begin{equation*}
+    \gamma_h=\int_{\frac{-1}{2}}^{\frac{1}{2}}\hat{\gamma}_{\omega}e^{2i\pi\omega h}d\omega
+\end{equation*} 
+$\hat{\gamma_{\omega}}$ is called the spectral density function. It is the discrete Fourrier transform of the autocovariance of the process : 
+\begin{equation*}
+    \hat{\gamma}_{\omega}=\sum_{h\in\mathbb{R}}\gamma_he^{-2i\pi\omega h}
+\end{equation*}
+\end{Def}
+One can check that the spectral density function is positive, pair and corresponds to the total variance if integrated over its domain. looking at their definitions, autocovariance and spectral density contain the same information.
+\begin{Prop}
+Let $Y_t$ and $X_t$ be random stationary processes with absolutely summable autocovariance function such that: 
+\begin{equation*}
+    Y_t=\sum_{k\geq 0} a_kX_{t-k}
+\end{equation*}
+Then one derives :
+\begin{equation*}
+    \hat{\gamma}_y(\omega)=|A(\omega)|^2\hat{\gamma}_x(\omega)
+\end{equation*}
+\end{Prop}
+\begin{Cor}
+If $X_t$ is an ARMA process with inovation $\epsilon$ then \begin{equation*}
+    \hat{\gamma}_x(\omega)=\frac{\psi(e^{-2i\pi\omega})}{\phi(e^{-2i\pi\omega})}\sigma_{\epsilon}
+\end{equation*}
+\end{Cor}
+\begin{ex}
+Let $X_t$ be an $AR(1)$ process. Then one computes : 
+\begin{equation*}
+    \hat{\gamma}_x(\omega)=\frac{\sigma^2}{1-\phi_1 e^{-2i\pi\omega}}
+\end{equation*}
+Looking at the amplitude of the spectral density, one notes that lower frequencies have higher power than higher frequencies. \end{ex}
 \section{G-causality}
-\section{One Example}
-\section{Notations}
-\section{Questions}
+\section{Estimation}
+\section{Implementation}
+\section{State space modeling}
+\section{Questions, TODO}
 \begin{itemize}
-\item Sationarity equivalent to stability equivalent to coefficint does not depend on time?
+\item Sationarity equivalent to stability equivalent to coefficient does not depend on time?
+\item Wold decomposition theorem
+\item Plot PSD of AR(1) process
+\item Why stationarity is important and what methods can we use to make the data stationary?
 \end{itemize}
 \section{appendix, proofs}
 \end{document}
